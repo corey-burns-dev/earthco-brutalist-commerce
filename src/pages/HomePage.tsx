@@ -41,11 +41,11 @@ export default function HomePage() {
 						STYLE
 					</h1>
 					<p>
-						// ORGANIC COLLECTION
+						ORGANIC COLLECTION
 						<br />
-						// SUSTAINABLE FABRICATION
+						SUSTAINABLE FABRICATION
 						<br />
-						// EARTH APPROVED
+						EARTH APPROVED
 					</p>
 					<div className="hero-actions">
 						<Link to="/shop" className="btn btn-dark">

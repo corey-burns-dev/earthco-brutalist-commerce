@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { z } from "zod";
+import { auditLog, getRequestIp } from "../lib/audit.js";
 import { createSessionToken, hashPassword, verifyPassword } from "../lib/auth.js";
 import { env } from "../lib/env.js";
 import { prisma } from "../lib/prisma.js";
+import { createRateLimit } from "../middleware/rateLimit.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 
 const router = Router();
@@ -16,15 +18,23 @@ const registerSchema = credentialsSchema.extend({
   name: z.string().min(1)
 });
 
+const authRateLimit = createRateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 12,
+  message: "Too many authentication attempts. Please try again shortly."
+});
+
 function sessionExpiryDate() {
   const date = new Date();
   date.setDate(date.getDate() + env.sessionDays);
   return date;
 }
 
-router.post("/register", async (request, response) => {
+router.post("/register", authRateLimit, async (request, response) => {
   const parsed = registerSchema.safeParse(request.body);
+  const ip = getRequestIp(request);
   if (!parsed.success) {
+    auditLog("auth.register_invalid_payload", { ip });
     response.status(400).json({ message: "Invalid registration payload." });
     return;
   }
@@ -33,6 +43,7 @@ router.post("/register", async (request, response) => {
   const isAdmin = env.adminEmails.includes(email);
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
+    auditLog("auth.register_conflict", { ip, email });
     response.status(409).json({ message: "An account with that email already exists." });
     return;
   }
@@ -62,12 +73,15 @@ router.post("/register", async (request, response) => {
     return user;
   });
 
+  auditLog("auth.register_success", { ip, email, userId: result.id, isAdmin: result.isAdmin });
   response.status(201).json({ user: result, token });
 });
 
-router.post("/login", async (request, response) => {
+router.post("/login", authRateLimit, async (request, response) => {
   const parsed = credentialsSchema.safeParse(request.body);
+  const ip = getRequestIp(request);
   if (!parsed.success) {
+    auditLog("auth.login_invalid_payload", { ip });
     response.status(400).json({ message: "Invalid login payload." });
     return;
   }
@@ -76,12 +90,14 @@ router.post("/login", async (request, response) => {
 
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
+    auditLog("auth.login_failed", { ip, email });
     response.status(401).json({ message: "Invalid email/password combination." });
     return;
   }
 
   const isValid = await verifyPassword(parsed.data.password, user.passwordHash);
   if (!isValid) {
+    auditLog("auth.login_failed", { ip, email, userId: user.id });
     response.status(401).json({ message: "Invalid email/password combination." });
     return;
   }
@@ -96,6 +112,7 @@ router.post("/login", async (request, response) => {
     }
   });
 
+  auditLog("auth.login_success", { ip, email, userId: user.id, isAdmin: user.isAdmin });
   response.json({
     user: {
       id: user.id,
@@ -114,6 +131,10 @@ router.post("/logout", requireAuth, async (request, response) => {
     }
   });
 
+  auditLog("auth.logout", {
+    ip: getRequestIp(request),
+    userId: request.auth?.user.id
+  });
   response.json({ ok: true });
 });
 

@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { z } from "zod";
+import { auditLog, getRequestIp } from "../lib/audit.js";
 import { HttpError } from "../lib/httpError.js";
+import { computeShipping, createOrderWithRetry } from "../lib/orders.js";
 import { prisma } from "../lib/prisma.js";
 import { serializeOrder } from "../lib/serializers.js";
 import { requireAuth } from "../middleware/requireAuth.js";
@@ -18,14 +20,6 @@ const checkoutSchema = z.object({
   country: z.string().min(1)
 });
 
-function computeShipping(subtotal: number) {
-  return subtotal > 250 || subtotal === 0 ? 0 : 12;
-}
-
-function createOrderCode() {
-  return `EC-${Date.now().toString().slice(-8)}-${Math.floor(Math.random() * 90 + 10)}`;
-}
-
 router.get("/", async (request, response) => {
   const userId = request.auth!.user.id;
   const orders = await prisma.order.findMany({
@@ -41,7 +35,12 @@ router.get("/", async (request, response) => {
 
 router.post("/checkout", async (request, response, next) => {
   const parsed = checkoutSchema.safeParse(request.body);
+  const ip = getRequestIp(request);
   if (!parsed.success) {
+    auditLog("order.checkout_invalid_payload", {
+      ip,
+      userId: request.auth?.user.id
+    });
     response.status(400).json({ message: "Invalid checkout payload." });
     return;
   }
@@ -89,30 +88,28 @@ router.post("/checkout", async (request, response, next) => {
         }
       }
 
-      const createdOrder = await tx.order.create({
-        data: {
-          orderCode: createOrderCode(),
-          userId,
-          subtotal,
-          shipping,
-          total,
-          shippingFullName: parsed.data.fullName.trim(),
-          shippingEmail: parsed.data.email.trim(),
-          shippingAddress: parsed.data.address.trim(),
-          shippingCity: parsed.data.city.trim(),
-          shippingZip: parsed.data.zip.trim(),
-          shippingCountry: parsed.data.country.trim(),
-          lines: {
-            create: cartItems.map((item) => ({
-              productId: item.productId,
-              productName: item.product.name,
-              quantity: item.quantity,
-              unitPrice: item.product.price
-            }))
-          }
+      const createdOrder = await createOrderWithRetry(tx, {
+        user: {
+          connect: { id: userId }
         },
-        include: {
-          lines: true
+        subtotal,
+        shipping,
+        total,
+        shippingFullName: parsed.data.fullName.trim(),
+        shippingEmail: parsed.data.email.trim(),
+        shippingAddress: parsed.data.address.trim(),
+        shippingCity: parsed.data.city.trim(),
+        shippingZip: parsed.data.zip.trim(),
+        shippingCountry: parsed.data.country.trim(),
+        lines: {
+          create: cartItems.map((item) => ({
+            product: {
+              connect: { id: item.productId }
+            },
+            productName: item.product.name,
+            quantity: item.quantity,
+            unitPrice: item.product.price
+          }))
         }
       });
 
@@ -124,7 +121,22 @@ router.post("/checkout", async (request, response, next) => {
     });
 
     response.status(201).json({ order: serializeOrder(order) });
+    auditLog("order.checkout_success", {
+      ip,
+      userId,
+      orderId: order.id,
+      orderCode: order.orderCode,
+      total: order.total
+    });
   } catch (error) {
+    if (error instanceof HttpError) {
+      auditLog("order.checkout_failed", {
+        ip,
+        userId,
+        status: error.status,
+        reason: error.message
+      });
+    }
     next(error);
   }
 });

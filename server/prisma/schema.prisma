@@ -23,13 +23,13 @@ enum OrderStatus {
 }
 
 model User {
-  id           String      @id @default(cuid())
+  id           String     @id @default(cuid())
   name         String
-  email        String      @unique
+  email        String     @unique
   passwordHash String
-  isAdmin      Boolean     @default(false)
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  isAdmin      Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   sessions     Session[]
   cartItems    CartItem[]
   orders       Order[]
@@ -47,7 +47,7 @@ model Session {
 }
 
 model Product {
-  id          Int             @id
+  id          Int             @id @default(autoincrement())
   slug        String          @unique
   name        String
   tagline     String
@@ -80,23 +80,23 @@ model CartItem {
 }
 
 model Order {
-  id                String      @id @default(cuid())
-  orderCode         String      @unique
-  status            OrderStatus @default(PLACED)
-  stripeSessionId   String?     @unique
-  subtotal          Int
-  shipping          Int
-  total             Int
-  shippingFullName  String
-  shippingEmail     String
-  shippingAddress   String
-  shippingCity      String
-  shippingZip       String
-  shippingCountry   String
-  createdAt         DateTime    @default(now())
-  userId            String
-  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  lines             OrderLine[]
+  id               String      @id @default(cuid())
+  orderCode        String      @unique
+  status           OrderStatus @default(PLACED)
+  stripeSessionId  String?     @unique
+  subtotal         Int
+  shipping         Int
+  total            Int
+  shippingFullName String
+  shippingEmail    String
+  shippingAddress  String
+  shippingCity     String
+  shippingZip      String
+  shippingCountry  String
+  createdAt        DateTime    @default(now())
+  userId           String
+  user             User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lines            OrderLine[]
 
   @@index([userId, createdAt])
 }

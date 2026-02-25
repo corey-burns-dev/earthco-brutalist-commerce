@@ -20,5 +20,6 @@ export const env = {
     .split(",")
     .map((entry) => entry.trim().toLowerCase())
     .filter(Boolean),
-  stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? ""
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? "",
+  stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? ""
 };

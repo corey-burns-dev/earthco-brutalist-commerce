@@ -60,28 +60,28 @@ cp server/.env.example server/.env
 - `SESSION_DAYS` auth session length
 - `ADMIN_EMAILS` comma-separated admin emails (these become admin on registration)
 - `STRIPE_SECRET_KEY` Stripe test secret key (`sk_test_...`)
+- `STRIPE_WEBHOOK_SECRET` Stripe webhook signing secret (`whsec_...`)
 
 ## Local Setup
 
 1. Install dependencies:
 
 ```bash
-npm install
-npm --prefix server install
+bun install
 ```
 
 1. Start Postgres:
 
 ```bash
-npm run db:up
+bun run db:up
 ```
 
 1. Generate Prisma client, run migration, and seed:
 
 ```bash
-npm run prisma:generate
-npm run db:migrate
-npm run db:seed
+bun run prisma:generate
+bun run db:migrate
+bun run db:seed
 ```
 
 ## Run
@@ -89,13 +89,13 @@ npm run db:seed
 Terminal A:
 
 ```bash
-npm run dev:server
+bun run dev:server
 ```
 
 Terminal B:
 
 ```bash
-npm run dev:client
+bun run dev:client
 ```
 
 - Frontend: `http://localhost:5173`
@@ -117,16 +117,19 @@ npm run dev:client
 ## Build
 
 ```bash
-npm run build
+bun run build
 ```
 
 ## Scripts
 
-- `npm run dev:client`
-- `npm run dev:server`
-- `npm run build`
-- `npm run db:up`
-- `npm run db:down`
-- `npm run prisma:generate`
-- `npm run db:migrate`
-- `npm run db:seed`
+- `bun run dev:client`
+- `bun run dev:server`
+- `bun run build`
+- `bun run test`
+- `bun run lint`
+- `bun run format`
+- `bun run db:up`
+- `bun run db:down`
+- `bun run prisma:generate`
+- `bun run db:migrate`
+- `bun run db:seed`
