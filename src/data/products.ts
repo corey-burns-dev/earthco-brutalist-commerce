@@ -10,35 +10,34 @@ const defaultDescriptions: Record<Product["category"], string> = {
     "Weather-tuned layering piece with structured shape, durable fabric, and everyday utility detailing.",
   FOOTWEAR:
     "Grounded comfort with trail-capable grip and long-wear cushioning for city and weekend movement.",
-  BAGS:
-    "Organized carry architecture built for commute, travel, and modular daily gear loads.",
+  BAGS: "Organized carry architecture built for commute, travel, and modular daily gear loads.",
   ACCESSORIES:
     "Functional finishing piece with clean lines and durable materials for daily rotation.",
   ESSENTIALS:
-    "Core wardrobe staple with balanced weight, clean fit, and reliable all-season wearability."
+    "Core wardrobe staple with balanced weight, clean fit, and reliable all-season wearability.",
 };
 
 const categoryGalleries: Record<Product["category"], string[]> = {
   OUTERWEAR: [
     "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=1200",
-    "https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?auto=format&fit=crop&q=80&w=1200"
+    "https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?auto=format&fit=crop&q=80&w=1200",
   ],
   FOOTWEAR: [
     "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=1200",
-    "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&q=80&w=1200"
+    "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&q=80&w=1200",
   ],
   BAGS: [
     "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=1200",
-    "https://images.unsplash.com/photo-1595341888016-a392ef81b7de?auto=format&fit=crop&q=80&w=1200"
+    "https://images.unsplash.com/photo-1595341888016-a392ef81b7de?auto=format&fit=crop&q=80&w=1200",
   ],
   ACCESSORIES: [
     "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&q=80&w=1200",
-    "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&q=80&w=1200"
+    "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&q=80&w=1200",
   ],
   ESSENTIALS: [
     "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&q=80&w=1200",
-    "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=1200"
-  ]
+    "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=1200",
+  ],
 };
 
 const productSeeds: ProductSeed[] = [
@@ -55,7 +54,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1200",
     stock: 17,
-    rating: 4.8
+    rating: 4.8,
   },
   {
     id: 2,
@@ -70,7 +69,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=1200",
     stock: 12,
-    rating: 4.6
+    rating: 4.6,
   },
   {
     id: 3,
@@ -85,7 +84,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=1200",
     stock: 20,
-    rating: 4.7
+    rating: 4.7,
   },
   {
     id: 4,
@@ -100,7 +99,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=1200",
     stock: 9,
-    rating: 4.5
+    rating: 4.5,
   },
   {
     id: 5,
@@ -115,7 +114,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1200",
     stock: 28,
-    rating: 4.6
+    rating: 4.6,
   },
   {
     id: 6,
@@ -130,7 +129,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=1200",
     stock: 14,
-    rating: 4.8
+    rating: 4.8,
   },
   {
     id: 7,
@@ -145,7 +144,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?auto=format&fit=crop&q=80&w=1200",
     stock: 7,
-    rating: 4.9
+    rating: 4.9,
   },
   {
     id: 8,
@@ -160,7 +159,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&q=80&w=1200",
     stock: 41,
-    rating: 4.4
+    rating: 4.4,
   },
   {
     id: 9,
@@ -173,7 +172,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&q=80&w=1200",
     stock: 22,
-    rating: 4.5
+    rating: 4.5,
   },
   {
     id: 10,
@@ -186,7 +185,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?auto=format&fit=crop&q=80&w=1200",
     stock: 26,
-    rating: 4.2
+    rating: 4.2,
   },
   {
     id: 11,
@@ -199,7 +198,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&q=80&w=1200",
     stock: 18,
-    rating: 4.6
+    rating: 4.6,
   },
   {
     id: 12,
@@ -212,7 +211,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1520256862855-398228c41684?auto=format&fit=crop&q=80&w=1200",
     stock: 11,
-    rating: 4.7
+    rating: 4.7,
   },
   {
     id: 13,
@@ -225,7 +224,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=1200",
     stock: 10,
-    rating: 4.6
+    rating: 4.6,
   },
   {
     id: 14,
@@ -238,7 +237,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&q=80&w=1200",
     stock: 16,
-    rating: 4.4
+    rating: 4.4,
   },
   {
     id: 15,
@@ -251,7 +250,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&q=80&w=1200",
     stock: 24,
-    rating: 4.3
+    rating: 4.3,
   },
   {
     id: 16,
@@ -264,7 +263,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1200",
     stock: 15,
-    rating: 4.5
+    rating: 4.5,
   },
   {
     id: 17,
@@ -277,7 +276,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=1200",
     stock: 13,
-    rating: 4.1
+    rating: 4.1,
   },
   {
     id: 18,
@@ -290,7 +289,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&q=80&w=1200",
     stock: 8,
-    rating: 4.7
+    rating: 4.7,
   },
   {
     id: 19,
@@ -303,7 +302,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&q=80&w=1200",
     stock: 6,
-    rating: 4.6
+    rating: 4.6,
   },
   {
     id: 20,
@@ -316,7 +315,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1527719327859-c6ce80353573?auto=format&fit=crop&q=80&w=1200",
     stock: 12,
-    rating: 4.5
+    rating: 4.5,
   },
   {
     id: 21,
@@ -329,7 +328,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1200",
     stock: 29,
-    rating: 4.2
+    rating: 4.2,
   },
   {
     id: 22,
@@ -342,7 +341,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=1200",
     stock: 14,
-    rating: 4.6
+    rating: 4.6,
   },
   {
     id: 23,
@@ -355,7 +354,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&q=80&w=1200",
     stock: 27,
-    rating: 4.3
+    rating: 4.3,
   },
   {
     id: 24,
@@ -368,7 +367,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&q=80&w=1200",
     stock: 37,
-    rating: 4.1
+    rating: 4.1,
   },
   {
     id: 25,
@@ -381,7 +380,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&q=80&w=1200",
     stock: 12,
-    rating: 4.7
+    rating: 4.7,
   },
   {
     id: 26,
@@ -394,7 +393,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=1200",
     stock: 9,
-    rating: 4.5
+    rating: 4.5,
   },
   {
     id: 27,
@@ -407,7 +406,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1614179689702-355944cd0918?auto=format&fit=crop&q=80&w=1200",
     stock: 19,
-    rating: 4.4
+    rating: 4.4,
   },
   {
     id: 28,
@@ -420,7 +419,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1575032617751-6ddec2089882?auto=format&fit=crop&q=80&w=1200",
     stock: 23,
-    rating: 4.3
+    rating: 4.3,
   },
   {
     id: 29,
@@ -433,7 +432,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1618677366787-9727aacca7ea?auto=format&fit=crop&q=80&w=1200",
     stock: 30,
-    rating: 4.2
+    rating: 4.2,
   },
   {
     id: 30,
@@ -446,7 +445,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&q=80&w=1200",
     stock: 34,
-    rating: 4.1
+    rating: 4.1,
   },
   {
     id: 31,
@@ -459,7 +458,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=1200",
     stock: 21,
-    rating: 4.5
+    rating: 4.5,
   },
   {
     id: 32,
@@ -472,7 +471,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=1200",
     stock: 11,
-    rating: 4.6
+    rating: 4.6,
   },
   {
     id: 33,
@@ -485,7 +484,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=1200",
     stock: 43,
-    rating: 4.4
+    rating: 4.4,
   },
   {
     id: 34,
@@ -498,7 +497,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&q=80&w=1200",
     stock: 26,
-    rating: 4.3
+    rating: 4.3,
   },
   {
     id: 35,
@@ -508,10 +507,9 @@ const productSeeds: ProductSeed[] = [
     price: 88,
     category: "ESSENTIALS",
     accent: "#6f765b",
-    heroImage:
-      "https://images.unsplash.com/photo-1506629905607-4e5a1c42f7f2?auto=format&fit=crop&q=80&w=1200",
+    heroImage: "/images/products/flint-jogger.png",
     stock: 24,
-    rating: 4.2
+    rating: 4.2,
   },
   {
     id: 36,
@@ -524,7 +522,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80&w=1200",
     stock: 28,
-    rating: 4.5
+    rating: 4.5,
   },
   {
     id: 37,
@@ -537,7 +535,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&q=80&w=1200",
     stock: 20,
-    rating: 4.6
+    rating: 4.6,
   },
   {
     id: 38,
@@ -550,7 +548,7 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&q=80&w=1200",
     stock: 19,
-    rating: 4.4
+    rating: 4.4,
   },
   {
     id: 39,
@@ -560,10 +558,9 @@ const productSeeds: ProductSeed[] = [
     price: 54,
     category: "ESSENTIALS",
     accent: "#9a825f",
-    heroImage:
-      "https://images.unsplash.com/photo-1565693413579-8ee9ebf6f4b1?auto=format&fit=crop&q=80&w=1200",
+    heroImage: "/images/products/grove-short.png",
     stock: 33,
-    rating: 4.1
+    rating: 4.1,
   },
   {
     id: 40,
@@ -576,12 +573,12 @@ const productSeeds: ProductSeed[] = [
     heroImage:
       "https://images.unsplash.com/photo-1516826957135-700dedea698c?auto=format&fit=crop&q=80&w=1200",
     stock: 25,
-    rating: 4.7
-  }
+    rating: 4.7,
+  },
 ];
 
 export const products: Product[] = productSeeds.map((product) => ({
   ...product,
   description: product.description ?? defaultDescriptions[product.category],
-  gallery: product.gallery ?? categoryGalleries[product.category]
+  gallery: product.gallery ?? categoryGalleries[product.category],
 }));
