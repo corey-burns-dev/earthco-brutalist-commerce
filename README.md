@@ -70,13 +70,13 @@ npm install
 npm --prefix server install
 ```
 
-2. Start Postgres:
+1. Start Postgres:
 
 ```bash
 npm run db:up
 ```
 
-3. Generate Prisma client, run migration, and seed:
+1. Generate Prisma client, run migration, and seed:
 
 ```bash
 npm run prisma:generate
