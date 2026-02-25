@@ -1,6 +1,6 @@
 # Earth/Co Market
 
-Professional, Earth-brutalist storefront built from the visual language of `227-EarthBrutalist.tsx`, now with a real full-stack backend, Stripe test checkout, and admin product CRUD.
+Professional, Earth-brutalist storefront with full checkout flow, admin dashboard, and PostgreSQL data persistence.
 
 ## Highlights
 
