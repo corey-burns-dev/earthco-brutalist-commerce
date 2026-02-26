@@ -26,15 +26,14 @@ async function request<T>(
 
   const response = await fetch(`${API_BASE}${path}`, {
     ...options,
-    headers
+    headers,
   });
 
   const raw = await response.text();
   const data = raw ? (JSON.parse(raw) as Record<string, unknown>) : {};
 
   if (!response.ok) {
-    const message =
-      typeof data.message === "string" ? data.message : "Request failed.";
+    const message = typeof data.message === "string" ? data.message : "Request failed.";
     throw new ApiError(response.status, message);
   }
 
@@ -48,14 +47,14 @@ export function getProducts() {
 export function register(name: string, email: string, password: string) {
   return request<{ user: SessionUser; token: string }>("/api/auth/register", {
     method: "POST",
-    body: JSON.stringify({ name, email, password })
+    body: JSON.stringify({ name, email, password }),
   });
 }
 
 export function login(email: string, password: string) {
   return request<{ user: SessionUser; token: string }>("/api/auth/login", {
     method: "POST",
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password }),
   });
 }
 
@@ -76,7 +75,7 @@ export function addCartItem(token: string, productId: number, quantity = 1) {
     "/api/cart",
     {
       method: "POST",
-      body: JSON.stringify({ productId, quantity })
+      body: JSON.stringify({ productId, quantity }),
     },
     token,
   );
@@ -87,7 +86,7 @@ export function updateCartItem(token: string, productId: number, quantity: numbe
     `/api/cart/${productId}`,
     {
       method: "PATCH",
-      body: JSON.stringify({ quantity })
+      body: JSON.stringify({ quantity }),
     },
     token,
   );
@@ -119,7 +118,7 @@ export function checkout(token: string, payload: CheckoutPayload) {
     "/api/orders/checkout",
     {
       method: "POST",
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     },
     token,
   );
@@ -130,7 +129,7 @@ export function createStripeCheckoutSession(token: string, payload: CheckoutPayl
     "/api/stripe/checkout-session",
     {
       method: "POST",
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     },
     token,
   );
@@ -148,15 +147,12 @@ export function getAdminProducts(token: string) {
   return request<{ products: Product[] }>("/api/admin/products", {}, token);
 }
 
-export function createAdminProduct(
-  token: string,
-  payload: Omit<Product, "id">,
-) {
+export function createAdminProduct(token: string, payload: Omit<Product, "id">) {
   return request<{ product: Product }>(
     "/api/admin/products",
     {
       method: "POST",
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     },
     token,
   );
@@ -171,7 +167,7 @@ export function updateAdminProduct(
     `/api/admin/products/${productId}`,
     {
       method: "PATCH",
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     },
     token,
   );
@@ -181,7 +177,7 @@ export function deleteAdminProduct(token: string, productId: number) {
   return request<{ ok: boolean }>(
     `/api/admin/products/${productId}`,
     {
-      method: "DELETE"
+      method: "DELETE",
     },
     token,
   );

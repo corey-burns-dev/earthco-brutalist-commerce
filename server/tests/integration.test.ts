@@ -11,7 +11,7 @@ const checkoutPayload = {
   address: "123 Test St",
   city: "Portland",
   zip: "97201",
-  country: "US"
+  country: "US",
 };
 
 async function resetDatabase() {
@@ -26,8 +26,8 @@ async function createUserSession(email: string, isAdmin = false) {
       name: email.split("@")[0] ?? "user",
       email,
       passwordHash: "hash",
-      isAdmin
-    }
+      isAdmin,
+    },
   });
 
   const token = createSessionToken();
@@ -35,8 +35,8 @@ async function createUserSession(email: string, isAdmin = false) {
     data: {
       userId: user.id,
       token,
-      expiresAt: new Date(Date.now() + 60 * 60 * 1000)
-    }
+      expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+    },
   });
 
   return { user, token };
@@ -79,7 +79,7 @@ describe("server integration", () => {
   test("prevents double-sell in concurrent direct checkout", async () => {
     const [{ user: userA, token: tokenA }, { user: userB, token: tokenB }] = await Promise.all([
       createUserSession("checkout-a@example.com"),
-      createUserSession("checkout-b@example.com")
+      createUserSession("checkout-b@example.com"),
     ]);
 
     const product = await prisma.product.create({
@@ -94,15 +94,15 @@ describe("server integration", () => {
         heroImage: "https://example.com/image.jpg",
         gallery: ["https://example.com/image.jpg"],
         stock: 1,
-        rating: 4.5
-      }
+        rating: 4.5,
+      },
     });
 
     await prisma.cartItem.createMany({
       data: [
         { userId: userA.id, productId: product.id, quantity: 1 },
-        { userId: userB.id, productId: product.id, quantity: 1 }
-      ]
+        { userId: userB.id, productId: product.id, quantity: 1 },
+      ],
     });
 
     const [responseA, responseB] = await Promise.all([
@@ -110,18 +110,18 @@ describe("server integration", () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenA}`
+          Authorization: `Bearer ${tokenA}`,
         },
-        body: JSON.stringify(checkoutPayload)
+        body: JSON.stringify(checkoutPayload),
       }),
       fetch(`${baseUrl}/api/orders/checkout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenB}`
+          Authorization: `Bearer ${tokenB}`,
         },
-        body: JSON.stringify(checkoutPayload)
-      })
+        body: JSON.stringify(checkoutPayload),
+      }),
     ]);
 
     const [bodyA, bodyB] = await Promise.all([responseA.json(), responseB.json()]);
@@ -136,7 +136,7 @@ describe("server integration", () => {
 
     const stockAfter = await prisma.product.findUnique({
       where: { id: product.id },
-      select: { stock: true }
+      select: { stock: true },
     });
     expect(stockAfter?.stock).toBe(0);
 
@@ -159,16 +159,16 @@ describe("server integration", () => {
         heroImage: "https://example.com/image.jpg",
         gallery: ["https://example.com/image.jpg"],
         stock: 3,
-        rating: 4.4
-      }
+        rating: 4.4,
+      },
     });
 
     await prisma.cartItem.create({
       data: {
         userId: user.id,
         productId: product.id,
-        quantity: 2
-      }
+        quantity: 2,
+      },
     });
 
     await prisma.order.create({
@@ -192,16 +192,16 @@ describe("server integration", () => {
               productId: product.id,
               productName: product.name,
               quantity: 2,
-              unitPrice: product.price
-            }
-          ]
-        }
-      }
+              unitPrice: product.price,
+            },
+          ],
+        },
+      },
     });
 
     const [resultA, resultB] = await Promise.all([
       finalizeStripeOrder("cs_test_idempotent", user.id),
-      finalizeStripeOrder("cs_test_idempotent", user.id)
+      finalizeStripeOrder("cs_test_idempotent", user.id),
     ]);
 
     expect(resultA.status).toBe("PLACED");
@@ -209,13 +209,13 @@ describe("server integration", () => {
 
     const productAfter = await prisma.product.findUnique({
       where: { id: product.id },
-      select: { stock: true }
+      select: { stock: true },
     });
     expect(productAfter?.stock).toBe(1);
 
     const orderAfter = await prisma.order.findUnique({
       where: { stripeSessionId: "cs_test_idempotent" },
-      select: { status: true }
+      select: { status: true },
     });
     expect(orderAfter?.status).toBe("PLACED");
   });
@@ -227,9 +227,9 @@ describe("server integration", () => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ name: "Missing Product" })
+      body: JSON.stringify({ name: "Missing Product" }),
     });
     const updateBody = await updateResponse.json();
     expect(updateResponse.status).toBe(404);
@@ -238,8 +238,8 @@ describe("server integration", () => {
     const deleteResponse = await fetch(`${baseUrl}/api/admin/products/999999`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     const deleteBody = await deleteResponse.json();
     expect(deleteResponse.status).toBe(404);

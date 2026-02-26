@@ -10,7 +10,7 @@ const categories: ProductCategory[] = [
   "FOOTWEAR",
   "BAGS",
   "ACCESSORIES",
-  "ESSENTIALS"
+  "ESSENTIALS",
 ];
 
 export default function ShopPage() {

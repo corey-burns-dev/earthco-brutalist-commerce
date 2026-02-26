@@ -132,7 +132,11 @@ h4 {
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease, color 120ms ease;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease,
+    color 120ms ease;
 }
 
 .btn:hover {

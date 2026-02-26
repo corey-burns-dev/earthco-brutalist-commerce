@@ -30,10 +30,10 @@ export const requireAuth: RequestHandler = async (request, response, next) => {
           id: true,
           name: true,
           email: true,
-          isAdmin: true
-        }
-      }
-    }
+          isAdmin: true,
+        },
+      },
+    },
   });
 
   if (!session || session.expiresAt.getTime() < Date.now()) {
@@ -46,8 +46,8 @@ export const requireAuth: RequestHandler = async (request, response, next) => {
     session: {
       id: session.id,
       token: session.token,
-      expiresAt: session.expiresAt
-    }
+      expiresAt: session.expiresAt,
+    },
   };
 
   next();

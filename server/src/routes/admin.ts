@@ -25,7 +25,7 @@ const baseSchema = z.object({
   heroImage: z.string().url(),
   gallery: z.array(z.string().url()).min(1).max(6),
   stock: z.number().int().min(0),
-  rating: z.number().min(0).max(5)
+  rating: z.number().min(0).max(5),
 });
 
 const createSchema = baseSchema;
@@ -35,7 +35,7 @@ router.use(requireAuth, requireAdmin);
 
 router.get("/products", async (_request, response) => {
   const products = await prisma.product.findMany({
-    orderBy: { id: "asc" }
+    orderBy: { id: "asc" },
   });
 
   response.json({ products: products.map(serializeProduct) });
@@ -53,7 +53,7 @@ router.post("/products", async (request, response) => {
 
   const existingSlug = await prisma.product.findUnique({
     where: { slug: parsed.data.slug },
-    select: { id: true }
+    select: { id: true },
   });
 
   if (existingSlug) {
@@ -64,8 +64,8 @@ router.post("/products", async (request, response) => {
 
   const product = await prisma.product.create({
     data: {
-      ...parsed.data
-    }
+      ...parsed.data,
+    },
   });
 
   auditLog("admin.product_created", { actorId, ip, productId: product.id, slug: product.slug });
@@ -92,13 +92,18 @@ router.patch("/products/:id", async (request, response) => {
     const existingSlug = await prisma.product.findFirst({
       where: {
         slug: parsed.data.slug,
-        id: { not: id }
+        id: { not: id },
       },
-      select: { id: true }
+      select: { id: true },
     });
 
     if (existingSlug) {
-      auditLog("admin.product_update_conflict", { actorId, ip, productId: id, slug: parsed.data.slug });
+      auditLog("admin.product_update_conflict", {
+        actorId,
+        ip,
+        productId: id,
+        slug: parsed.data.slug,
+      });
       response.status(409).json({ message: "Slug already exists." });
       return;
     }
@@ -107,7 +112,7 @@ router.patch("/products/:id", async (request, response) => {
   try {
     const product = await prisma.product.update({
       where: { id },
-      data: parsed.data
+      data: parsed.data,
     });
 
     auditLog("admin.product_updated", { actorId, ip, productId: product.id, slug: product.slug });
@@ -133,13 +138,13 @@ router.delete("/products/:id", async (request, response) => {
   }
 
   const orderUsage = await prisma.orderLine.count({
-    where: { productId: id }
+    where: { productId: id },
   });
 
   if (orderUsage > 0) {
     auditLog("admin.product_delete_blocked_by_orders", { actorId, ip, productId: id });
     response.status(409).json({
-      message: "Cannot delete a product that already appears in past orders."
+      message: "Cannot delete a product that already appears in past orders.",
     });
     return;
   }
@@ -147,7 +152,7 @@ router.delete("/products/:id", async (request, response) => {
   try {
     const existing = await prisma.product.findUnique({
       where: { id },
-      select: { slug: true }
+      select: { slug: true },
     });
 
     await prisma.cartItem.deleteMany({ where: { productId: id } });

@@ -11,17 +11,17 @@ const router = Router();
 
 const credentialsSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6)
+  password: z.string().min(6),
 });
 
 const registerSchema = credentialsSchema.extend({
-  name: z.string().min(1)
+  name: z.string().min(1),
 });
 
 const authRateLimit = createRateLimit({
   windowMs: 15 * 60 * 1000,
   max: 12,
-  message: "Too many authentication attempts. Please try again shortly."
+  message: "Too many authentication attempts. Please try again shortly.",
 });
 
 function sessionExpiryDate() {
@@ -57,17 +57,17 @@ router.post("/register", authRateLimit, async (request, response) => {
         name: parsed.data.name.trim(),
         email,
         passwordHash,
-        isAdmin
+        isAdmin,
       },
-      select: { id: true, name: true, email: true, isAdmin: true }
+      select: { id: true, name: true, email: true, isAdmin: true },
     });
 
     await tx.session.create({
       data: {
         userId: user.id,
         token,
-        expiresAt: sessionExpiryDate()
-      }
+        expiresAt: sessionExpiryDate(),
+      },
     });
 
     return user;
@@ -108,8 +108,8 @@ router.post("/login", authRateLimit, async (request, response) => {
     data: {
       userId: user.id,
       token,
-      expiresAt: sessionExpiryDate()
-    }
+      expiresAt: sessionExpiryDate(),
+    },
   });
 
   auditLog("auth.login_success", { ip, email, userId: user.id, isAdmin: user.isAdmin });
@@ -118,22 +118,22 @@ router.post("/login", authRateLimit, async (request, response) => {
       id: user.id,
       name: user.name,
       email: user.email,
-      isAdmin: user.isAdmin
+      isAdmin: user.isAdmin,
     },
-    token
+    token,
   });
 });
 
 router.post("/logout", requireAuth, async (request, response) => {
   await prisma.session.deleteMany({
     where: {
-      token: request.auth!.session.token
-    }
+      token: request.auth!.session.token,
+    },
   });
 
   auditLog("auth.logout", {
     ip: getRequestIp(request),
-    userId: request.auth?.user.id
+    userId: request.auth?.user.id,
   });
   response.json({ ok: true });
 });

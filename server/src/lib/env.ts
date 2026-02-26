@@ -21,5 +21,5 @@ export const env = {
     .map((entry) => entry.trim().toLowerCase())
     .filter(Boolean),
   stripeSecretKey: required("STRIPE_SECRET_KEY"),
-  stripeWebhookSecret: required("STRIPE_WEBHOOK_SECRET")
+  stripeWebhookSecret: required("STRIPE_WEBHOOK_SECRET"),
 };

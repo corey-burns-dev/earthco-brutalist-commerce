@@ -17,7 +17,7 @@ export function serializeProduct(product: Product) {
     heroImage: product.heroImage,
     gallery: product.gallery,
     stock: product.stock,
-    rating: product.rating
+    rating: product.rating,
   };
 }
 
@@ -35,7 +35,7 @@ export function serializeOrder(order: Order & { lines: OrderLine[] }) {
       productId: line.productId,
       productName: line.productName,
       quantity: line.quantity,
-      unitPrice: line.unitPrice
+      unitPrice: line.unitPrice,
     })),
     shippingAddress: {
       fullName: order.shippingFullName,
@@ -43,7 +43,7 @@ export function serializeOrder(order: Order & { lines: OrderLine[] }) {
       address: order.shippingAddress,
       city: order.shippingCity,
       zip: order.shippingZip,
-      country: order.shippingCountry
-    }
+      country: order.shippingCountry,
+    },
   };
 }

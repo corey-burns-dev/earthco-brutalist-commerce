@@ -25,7 +25,7 @@ export function auditLog(event: string, payload: AuditPayload = {}) {
       type: "audit",
       event,
       at: new Date().toISOString(),
-      ...payload
+      ...payload,
     }),
   );
 }

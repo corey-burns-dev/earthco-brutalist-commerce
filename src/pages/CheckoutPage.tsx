@@ -11,7 +11,7 @@ const defaultForm = {
   address: "",
   city: "",
   zip: "",
-  country: ""
+  country: "",
 };
 
 export default function CheckoutPage() {
@@ -26,7 +26,7 @@ export default function CheckoutPage() {
     shippingCost,
     cartTotal,
     placeOrder,
-    refreshUserData
+    refreshUserData,
   } = useStore();
   const [form, setForm] = useState(defaultForm);
   const [message, setMessage] = useState<string | null>(null);

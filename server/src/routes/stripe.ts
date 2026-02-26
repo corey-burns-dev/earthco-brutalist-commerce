@@ -18,7 +18,7 @@ const checkoutSchema = z.object({
   address: z.string().min(1),
   city: z.string().min(1),
   zip: z.string().min(1),
-  country: z.string().min(1)
+  country: z.string().min(1),
 });
 
 function getStripeClient() {
@@ -29,11 +29,7 @@ function getStripeClient() {
   return new Stripe(env.stripeSecretKey);
 }
 
-function getWebhookEvent(
-  stripe: Stripe,
-  payload: Buffer,
-  signature: string | undefined,
-) {
+function getWebhookEvent(stripe: Stripe, payload: Buffer, signature: string | undefined) {
   if (!signature) {
     throw new HttpError(400, "Missing Stripe signature header.");
   }
@@ -53,14 +49,17 @@ export async function finalizeStripeOrder(sessionId: string, userId?: string) {
   return prisma.$transaction(async (tx) => {
     const existingOrder = await tx.order.findUnique({
       where: { stripeSessionId: sessionId },
-      include: { lines: true }
+      include: { lines: true },
     });
 
     if (!existingOrder || (userId && existingOrder.userId !== userId)) {
       throw new HttpError(404, "No order found for this Stripe session.");
     }
 
-    if (existingOrder.status === OrderStatus.PLACED || existingOrder.status === OrderStatus.FULFILLED) {
+    if (
+      existingOrder.status === OrderStatus.PLACED ||
+      existingOrder.status === OrderStatus.FULFILLED
+    ) {
       return existingOrder;
     }
 
@@ -72,17 +71,17 @@ export async function finalizeStripeOrder(sessionId: string, userId?: string) {
     const transition = await tx.order.updateMany({
       where: {
         id: existingOrder.id,
-        status: OrderStatus.PENDING_PAYMENT
+        status: OrderStatus.PENDING_PAYMENT,
       },
       data: {
-        status: OrderStatus.PLACED
-      }
+        status: OrderStatus.PLACED,
+      },
     });
 
     if (transition.count === 0) {
       const latest = await tx.order.findUnique({
         where: { id: existingOrder.id },
-        include: { lines: true }
+        include: { lines: true },
       });
 
       if (!latest) {
@@ -97,14 +96,14 @@ export async function finalizeStripeOrder(sessionId: string, userId?: string) {
         where: {
           id: line.productId,
           stock: {
-            gte: line.quantity
-          }
+            gte: line.quantity,
+          },
         },
         data: {
           stock: {
-            decrement: line.quantity
-          }
-        }
+            decrement: line.quantity,
+          },
+        },
       });
 
       if (stockUpdate.count === 0) {
@@ -114,13 +113,13 @@ export async function finalizeStripeOrder(sessionId: string, userId?: string) {
 
     await tx.cartItem.deleteMany({
       where: {
-        userId: existingOrder.userId
-      }
+        userId: existingOrder.userId,
+      },
     });
 
     const finalized = await tx.order.findUnique({
       where: { id: existingOrder.id },
-      include: { lines: true }
+      include: { lines: true },
     });
 
     if (!finalized) {
@@ -144,27 +143,27 @@ async function compensateStripeFulfillmentFailure(
     await stripe.refunds.create(
       {
         payment_intent: paymentIntent,
-        reason: "requested_by_customer"
+        reason: "requested_by_customer",
       },
       {
-        idempotencyKey: `earthco-refund-${session.id}`
+        idempotencyKey: `earthco-refund-${session.id}`,
       },
     );
   }
 
   const cancelledOrder = await prisma.order.findUnique({
     where: { stripeSessionId: session.id },
-    select: { id: true, userId: true, orderCode: true, status: true }
+    select: { id: true, userId: true, orderCode: true, status: true },
   });
 
   await prisma.order.updateMany({
     where: {
       stripeSessionId: session.id,
-      status: OrderStatus.PENDING_PAYMENT
+      status: OrderStatus.PENDING_PAYMENT,
     },
     data: {
-      status: OrderStatus.CANCELLED
-    }
+      status: OrderStatus.CANCELLED,
+    },
   });
 
   auditLog("stripe.order_cancelled_after_failed_fulfillment", {
@@ -172,7 +171,7 @@ async function compensateStripeFulfillmentFailure(
     orderId: cancelledOrder?.id,
     userId: cancelledOrder?.userId,
     orderCode: cancelledOrder?.orderCode,
-    hadPaymentIntent: Boolean(paymentIntent)
+    hadPaymentIntent: Boolean(paymentIntent),
   });
 }
 
@@ -209,18 +208,15 @@ router.post("/webhook", async (request, response, next) => {
             orderId: finalized.id,
             userId: finalized.userId,
             orderCode: finalized.orderCode,
-            status: finalized.status
+            status: finalized.status,
           });
         } catch (error) {
-          if (
-            error instanceof HttpError &&
-            (error.status === 400 || error.status === 409)
-          ) {
+          if (error instanceof HttpError && (error.status === 400 || error.status === 409)) {
             await compensateStripeFulfillmentFailure(stripe, session);
             auditLog("stripe.webhook_compensated", {
               eventType: event.type,
               sessionId: session.id,
-              reason: error.message
+              reason: error.message,
             });
           } else {
             throw error;
@@ -243,7 +239,7 @@ router.post("/checkout-session", async (request, response, next) => {
   if (!parsed.success) {
     auditLog("stripe.checkout_session_invalid_payload", {
       ip,
-      userId: request.auth?.user.id
+      userId: request.auth?.user.id,
     });
     response.status(400).json({ message: "Invalid checkout payload." });
     return;
@@ -256,7 +252,7 @@ router.post("/checkout-session", async (request, response, next) => {
 
     const cartItems = await prisma.cartItem.findMany({
       where: { userId },
-      include: { product: true }
+      include: { product: true },
     });
 
     if (cartItems.length === 0) {
@@ -287,9 +283,9 @@ router.post("/checkout-session", async (request, response, next) => {
             product_data: {
               name: item.product.name,
               description: item.product.tagline,
-              images: [item.product.heroImage]
-            }
-          }
+              images: [item.product.heroImage],
+            },
+          },
         })),
         ...(shipping > 0
           ? [
@@ -299,22 +295,22 @@ router.post("/checkout-session", async (request, response, next) => {
                   currency: "usd",
                   unit_amount: shipping * 100,
                   product_data: {
-                    name: "Shipping"
-                  }
-                }
-              }
+                    name: "Shipping",
+                  },
+                },
+              },
             ]
-          : [])
+          : []),
       ],
       metadata: {
-        userId
-      }
+        userId,
+      },
     });
 
     const order = await prisma.$transaction((tx) =>
       createOrderWithRetry(tx, {
         user: {
-          connect: { id: userId }
+          connect: { id: userId },
         },
         status: OrderStatus.PENDING_PAYMENT,
         stripeSessionId: session.id,
@@ -330,20 +326,20 @@ router.post("/checkout-session", async (request, response, next) => {
         lines: {
           create: cartItems.map((item) => ({
             product: {
-              connect: { id: item.productId }
+              connect: { id: item.productId },
             },
             productName: item.product.name,
             quantity: item.quantity,
-            unitPrice: item.product.price
-          }))
-        }
+            unitPrice: item.product.price,
+          })),
+        },
       }),
     );
 
     response.status(201).json({
       sessionId: session.id,
       url: session.url,
-      order: serializeOrder(order)
+      order: serializeOrder(order),
     });
     auditLog("stripe.checkout_session_created", {
       ip,
@@ -351,7 +347,7 @@ router.post("/checkout-session", async (request, response, next) => {
       orderId: order.id,
       orderCode: order.orderCode,
       sessionId: session.id,
-      total
+      total,
     });
   } catch (error) {
     if (error instanceof HttpError) {
@@ -359,7 +355,7 @@ router.post("/checkout-session", async (request, response, next) => {
         ip,
         userId,
         status: error.status,
-        reason: error.message
+        reason: error.message,
       });
     }
     next(error);
@@ -378,12 +374,12 @@ router.post("/confirm/:sessionId", async (request, response, next) => {
       prisma.order.findFirst({
         where: {
           stripeSessionId: sessionId,
-          userId
+          userId,
         },
         include: {
-          lines: true
-        }
-      })
+          lines: true,
+        },
+      }),
     ]);
 
     if (!existingOrder) {
@@ -394,7 +390,7 @@ router.post("/confirm/:sessionId", async (request, response, next) => {
       auditLog("stripe.confirm_not_paid", {
         userId,
         sessionId,
-        paymentStatus: session.payment_status
+        paymentStatus: session.payment_status,
       });
       response.json({ paid: false, order: serializeOrder(existingOrder) });
       return;
@@ -409,7 +405,7 @@ router.post("/confirm/:sessionId", async (request, response, next) => {
       orderId: order.id,
       orderCode: order.orderCode,
       status: order.status,
-      paid
+      paid,
     });
     response.json({ paid, order: serializeOrder(order) });
   } catch (error) {

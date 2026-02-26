@@ -9,11 +9,11 @@ router.use(requireAuth);
 
 const addSchema = z.object({
   productId: z.number().int().positive(),
-  quantity: z.number().int().min(1).max(99).optional()
+  quantity: z.number().int().min(1).max(99).optional(),
 });
 
 const updateSchema = z.object({
-  quantity: z.number().int().min(0).max(99)
+  quantity: z.number().int().min(0).max(99),
 });
 
 async function readCart(userId: string) {
@@ -21,11 +21,11 @@ async function readCart(userId: string) {
     where: { userId },
     select: {
       productId: true,
-      quantity: true
+      quantity: true,
     },
     orderBy: {
-      createdAt: "asc"
-    }
+      createdAt: "asc",
+    },
   });
 
   return items;
@@ -47,7 +47,7 @@ router.post("/", async (request, response) => {
 
   const product = await prisma.product.findUnique({
     where: { id: parsed.data.productId },
-    select: { id: true }
+    select: { id: true },
   });
 
   if (!product) {
@@ -61,9 +61,9 @@ router.post("/", async (request, response) => {
     where: {
       userId_productId: {
         userId,
-        productId: parsed.data.productId
-      }
-    }
+        productId: parsed.data.productId,
+      },
+    },
   });
 
   if (!existing) {
@@ -71,15 +71,15 @@ router.post("/", async (request, response) => {
       data: {
         userId,
         productId: parsed.data.productId,
-        quantity
-      }
+        quantity,
+      },
     });
   } else {
     await prisma.cartItem.update({
       where: { id: existing.id },
       data: {
-        quantity: Math.min(existing.quantity + quantity, 99)
-      }
+        quantity: Math.min(existing.quantity + quantity, 99),
+      },
     });
   }
 
@@ -106,13 +106,13 @@ router.patch("/:productId", async (request, response) => {
     await prisma.cartItem.deleteMany({
       where: {
         userId,
-        productId
-      }
+        productId,
+      },
     });
   } else {
     const product = await prisma.product.findUnique({
       where: { id: productId },
-      select: { id: true }
+      select: { id: true },
     });
 
     if (!product) {
@@ -124,17 +124,17 @@ router.patch("/:productId", async (request, response) => {
       where: {
         userId_productId: {
           userId,
-          productId
-        }
+          productId,
+        },
       },
       create: {
         userId,
         productId,
-        quantity: parsed.data.quantity
+        quantity: parsed.data.quantity,
       },
       update: {
-        quantity: parsed.data.quantity
-      }
+        quantity: parsed.data.quantity,
+      },
     });
   }
 
@@ -154,8 +154,8 @@ router.delete("/:productId", async (request, response) => {
   await prisma.cartItem.deleteMany({
     where: {
       userId,
-      productId
-    }
+      productId,
+    },
   });
 
   const items = await readCart(userId);
@@ -165,8 +165,8 @@ router.delete("/:productId", async (request, response) => {
 router.delete("/", async (request, response) => {
   await prisma.cartItem.deleteMany({
     where: {
-      userId: request.auth!.user.id
-    }
+      userId: request.auth!.user.id,
+    },
   });
 
   response.json({ cart: [] });

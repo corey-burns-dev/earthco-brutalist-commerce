@@ -1,13 +1,13 @@
 import cors from "cors";
 import express, { type NextFunction, type Request, type Response } from "express";
+import { env } from "./lib/env.js";
+import { HttpError } from "./lib/httpError.js";
 import adminRoutes from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
 import cartRoutes from "./routes/cart.js";
 import orderRoutes from "./routes/orders.js";
 import productRoutes from "./routes/products.js";
 import stripeRoutes from "./routes/stripe.js";
-import { env } from "./lib/env.js";
-import { HttpError } from "./lib/httpError.js";
 
 export function createApp() {
   const app = express();
@@ -15,7 +15,7 @@ export function createApp() {
   app.use(
     cors({
       origin: env.clientOrigin,
-      credentials: false
+      credentials: false,
     }),
   );
   app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));

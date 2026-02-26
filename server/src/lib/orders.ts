@@ -36,11 +36,11 @@ export async function createOrderWithRetry(
       return await tx.order.create({
         data: {
           orderCode: createOrderCode(),
-          ...data
+          ...data,
         },
         include: {
-          lines: true
-        }
+          lines: true,
+        },
       });
     } catch (error) {
       if (isOrderCodeConflict(error) && attempt < ORDER_CODE_MAX_ATTEMPTS - 1) {

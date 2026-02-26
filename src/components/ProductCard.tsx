@@ -80,7 +80,11 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
 
   return (
     <article className="product-card">
-      <Link to={`/product/${product.slug}`} className="product-image-wrap" aria-label={product.name}>
+      <Link
+        to={`/product/${product.slug}`}
+        className="product-image-wrap"
+        aria-label={product.name}
+      >
         <div className="product-id-tag">#{product.id.toString().padStart(3, "0")}</div>
         <img src={product.heroImage} alt={product.name} className="product-image" />
       </Link>
@@ -106,7 +110,10 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           {addButtonLabel}
         </button>
       </div>
-      <p className={addStatus === "unchanged" ? "cart-status cart-status-warning" : "cart-status"} aria-live="polite">
+      <p
+        className={addStatus === "unchanged" ? "cart-status cart-status-warning" : "cart-status"}
+        aria-live="polite"
+      >
         {cartStatusMessage}
       </p>
     </article>

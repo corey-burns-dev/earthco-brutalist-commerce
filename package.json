@@ -24,8 +24,8 @@
     "deps:outdated": "bun outdated --recursive",
     "deps:update": "bun update --recursive",
     "deps:update:latest": "bun update --latest --recursive",
-    "lint": "bunx @biomejs/biome lint .",
-    "lint:fix": "bunx @biomejs/biome lint --write .",
+    "lint": "bunx @biomejs/biome check .",
+    "lint:fix": "bunx @biomejs/biome check --write .",
     "format": "bunx @biomejs/biome format --write ."
   },
   "dependencies": {

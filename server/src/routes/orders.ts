@@ -17,7 +17,7 @@ const checkoutSchema = z.object({
   address: z.string().min(1),
   city: z.string().min(1),
   zip: z.string().min(1),
-  country: z.string().min(1)
+  country: z.string().min(1),
 });
 
 router.get("/", async (request, response) => {
@@ -25,9 +25,9 @@ router.get("/", async (request, response) => {
   const orders = await prisma.order.findMany({
     where: { userId },
     include: {
-      lines: true
+      lines: true,
     },
-    orderBy: { createdAt: "desc" }
+    orderBy: { createdAt: "desc" },
   });
 
   response.json({ orders: orders.map(serializeOrder) });
@@ -39,7 +39,7 @@ router.post("/checkout", async (request, response, next) => {
   if (!parsed.success) {
     auditLog("order.checkout_invalid_payload", {
       ip,
-      userId: request.auth?.user.id
+      userId: request.auth?.user.id,
     });
     response.status(400).json({ message: "Invalid checkout payload." });
     return;
@@ -51,7 +51,7 @@ router.post("/checkout", async (request, response, next) => {
     const order = await prisma.$transaction(async (tx) => {
       const cartItems = await tx.cartItem.findMany({
         where: { userId },
-        include: { product: true }
+        include: { product: true },
       });
 
       if (cartItems.length === 0) {
@@ -73,14 +73,14 @@ router.post("/checkout", async (request, response, next) => {
           where: {
             id: item.productId,
             stock: {
-              gte: item.quantity
-            }
+              gte: item.quantity,
+            },
           },
           data: {
             stock: {
-              decrement: item.quantity
-            }
-          }
+              decrement: item.quantity,
+            },
+          },
         });
 
         if (stockUpdate.count === 0) {
@@ -90,7 +90,7 @@ router.post("/checkout", async (request, response, next) => {
 
       const createdOrder = await createOrderWithRetry(tx, {
         user: {
-          connect: { id: userId }
+          connect: { id: userId },
         },
         subtotal,
         shipping,
@@ -104,17 +104,17 @@ router.post("/checkout", async (request, response, next) => {
         lines: {
           create: cartItems.map((item) => ({
             product: {
-              connect: { id: item.productId }
+              connect: { id: item.productId },
             },
             productName: item.product.name,
             quantity: item.quantity,
-            unitPrice: item.product.price
-          }))
-        }
+            unitPrice: item.product.price,
+          })),
+        },
       });
 
       await tx.cartItem.deleteMany({
-        where: { userId }
+        where: { userId },
       });
 
       return createdOrder;
@@ -126,7 +126,7 @@ router.post("/checkout", async (request, response, next) => {
       userId,
       orderId: order.id,
       orderCode: order.orderCode,
-      total: order.total
+      total: order.total,
     });
   } catch (error) {
     if (error instanceof HttpError) {
@@ -134,7 +134,7 @@ router.post("/checkout", async (request, response, next) => {
         ip,
         userId,
         status: error.status,
-        reason: error.message
+        reason: error.message,
       });
     }
     next(error);

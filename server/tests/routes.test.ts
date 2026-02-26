@@ -20,8 +20,8 @@ async function createUserSession(email: string, isAdmin = false) {
       name: email.split("@")[0] ?? "user",
       email,
       passwordHash: "hash",
-      isAdmin
-    }
+      isAdmin,
+    },
   });
 
   const token = createSessionToken();
@@ -29,8 +29,8 @@ async function createUserSession(email: string, isAdmin = false) {
     data: {
       userId: user.id,
       token,
-      expiresAt: new Date(Date.now() + 60 * 60 * 1000)
-    }
+      expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+    },
   });
 
   return { user, token };
@@ -47,7 +47,7 @@ const sampleProduct = {
   heroImage: "https://example.com/hero.jpg",
   gallery: ["https://example.com/gallery.jpg"],
   stock: 10,
-  rating: 4.2
+  rating: 4.2,
 };
 
 async function seedProduct(overrides: Partial<typeof sampleProduct> = {}) {
@@ -64,7 +64,7 @@ describe("routes integration", () => {
 
   function get(path: string, token?: string) {
     return fetch(`${baseUrl}${path}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
   }
 
@@ -73,9 +73,9 @@ describe("routes integration", () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {})
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
   }
 
@@ -84,16 +84,16 @@ describe("routes integration", () => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {})
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
   }
 
   function del(path: string, token?: string) {
     return fetch(`${baseUrl}${path}`, {
       method: "DELETE",
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
   }
 
@@ -125,7 +125,7 @@ describe("routes integration", () => {
       const res = await post("/api/auth/register", {
         name: "Alice",
         email: "alice@example.com",
-        password: "password123"
+        password: "password123",
       });
       const body = await res.json();
       expect(res.status).toBe(201);
@@ -138,12 +138,12 @@ describe("routes integration", () => {
       await post("/api/auth/register", {
         name: "Alice",
         email: "alice@example.com",
-        password: "password123"
+        password: "password123",
       });
       const res = await post("/api/auth/register", {
         name: "Alice 2",
         email: "alice@example.com",
-        password: "password456"
+        password: "password456",
       });
       expect(res.status).toBe(409);
     });
@@ -157,12 +157,12 @@ describe("routes integration", () => {
       await post("/api/auth/register", {
         name: "Bob",
         email: "bob@example.com",
-        password: "hunter2!"
+        password: "hunter2!",
       });
 
       const res = await post("/api/auth/login", {
         email: "bob@example.com",
-        password: "hunter2!"
+        password: "hunter2!",
       });
       const body = await res.json();
       expect(res.status).toBe(200);
@@ -174,11 +174,11 @@ describe("routes integration", () => {
       await post("/api/auth/register", {
         name: "Bob",
         email: "bob@example.com",
-        password: "hunter2!"
+        password: "hunter2!",
       });
       const res = await post("/api/auth/login", {
         email: "bob@example.com",
-        password: "wrongpassword"
+        password: "wrongpassword",
       });
       expect(res.status).toBe(401);
     });
@@ -186,7 +186,7 @@ describe("routes integration", () => {
     test("login rejects unknown email with 401", async () => {
       const res = await post("/api/auth/login", {
         email: "ghost@example.com",
-        password: "whatever"
+        password: "whatever",
       });
       expect(res.status).toBe(401);
     });
@@ -358,7 +358,7 @@ describe("routes integration", () => {
       address: "1 Main St",
       city: "Portland",
       zip: "97201",
-      country: "US"
+      country: "US",
     };
 
     test("GET /api/orders returns user's orders (initially empty)", async () => {
@@ -373,7 +373,7 @@ describe("routes integration", () => {
       const { user, token } = await createUserSession("orders-checkout@example.com");
       const product = await seedProduct({ stock: 5, price: 300 }); // price > 250 → free shipping
       await prisma.cartItem.create({
-        data: { userId: user.id, productId: product.id, quantity: 1 }
+        data: { userId: user.id, productId: product.id, quantity: 1 },
       });
 
       const res = await post("/api/orders/checkout", checkoutPayload, token);
@@ -398,7 +398,7 @@ describe("routes integration", () => {
       const { user, token } = await createUserSession("orders-shipping@example.com");
       const product = await seedProduct({ stock: 5, price: 100 });
       await prisma.cartItem.create({
-        data: { userId: user.id, productId: product.id, quantity: 1 }
+        data: { userId: user.id, productId: product.id, quantity: 1 },
       });
 
       const res = await post("/api/orders/checkout", checkoutPayload, token);
@@ -419,7 +419,7 @@ describe("routes integration", () => {
       const { user, token } = await createUserSession("orders-oos@example.com");
       const product = await seedProduct({ stock: 0 });
       await prisma.cartItem.create({
-        data: { userId: user.id, productId: product.id, quantity: 1 }
+        data: { userId: user.id, productId: product.id, quantity: 1 },
       });
 
       const res = await post("/api/orders/checkout", checkoutPayload, token);
@@ -432,7 +432,7 @@ describe("routes integration", () => {
       const { user, token } = await createUserSession("orders-history@example.com");
       const product = await seedProduct({ stock: 2 });
       await prisma.cartItem.create({
-        data: { userId: user.id, productId: product.id, quantity: 1 }
+        data: { userId: user.id, productId: product.id, quantity: 1 },
       });
 
       await post("/api/orders/checkout", checkoutPayload, token);
@@ -460,7 +460,7 @@ describe("routes integration", () => {
       heroImage: "https://example.com/hero.jpg",
       gallery: ["https://example.com/g1.jpg"],
       stock: 5,
-      rating: 4.0
+      rating: 4.0,
     };
 
     test("non-admin gets 403 on admin routes", async () => {
@@ -542,11 +542,11 @@ describe("routes integration", () => {
                 productId: product.id,
                 productName: product.name,
                 quantity: 1,
-                unitPrice: product.price
-              }
-            ]
-          }
-        }
+                unitPrice: product.price,
+              },
+            ],
+          },
+        },
       });
 
       const res = await del(`/api/admin/products/${product.id}`, token);

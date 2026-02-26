@@ -17,9 +17,7 @@ export default function AuthPage() {
     event.preventDefault();
 
     const result =
-      mode === "register"
-        ? await register(name, email, password)
-        : await login(email, password);
+      mode === "register" ? await register(name, email, password) : await login(email, password);
 
     setMessage(result.message);
 

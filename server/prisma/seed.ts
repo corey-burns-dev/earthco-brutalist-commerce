@@ -8,12 +8,12 @@ const categoryMap: Record<string, ProductCategory> = {
   FOOTWEAR: ProductCategory.FOOTWEAR,
   BAGS: ProductCategory.BAGS,
   ACCESSORIES: ProductCategory.ACCESSORIES,
-  ESSENTIALS: ProductCategory.ESSENTIALS
+  ESSENTIALS: ProductCategory.ESSENTIALS,
 };
 
 const products = storefrontProducts.map((product) => ({
   ...product,
-  category: categoryMap[product.category]
+  category: categoryMap[product.category],
 }));
 
 async function main() {
@@ -21,7 +21,7 @@ async function main() {
     await prisma.product.upsert({
       where: { id: product.id },
       update: product,
-      create: product
+      create: product,
     });
   }
 

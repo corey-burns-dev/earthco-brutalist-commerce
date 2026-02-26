@@ -16,7 +16,9 @@ export default function ProductPage() {
       return [];
     }
 
-    return products.filter((entry) => entry.category === product.category && entry.id !== product.id).slice(0, 3);
+    return products
+      .filter((entry) => entry.category === product.category && entry.id !== product.id)
+      .slice(0, 3);
   }, [products, product]);
 
   if (!product) {
