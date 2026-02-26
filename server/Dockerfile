@@ -9,7 +9,7 @@ RUN bun install --frozen-lockfile
 FROM deps AS build
 WORKDIR /app
 COPY server/ ./server/
-RUN bun run --cwd server prisma:generate
+RUN DATABASE_URL="postgresql://x:x@localhost/x" bun run --cwd server prisma:generate
 RUN bun run --cwd server build
 
 # ── release ───────────────────────────────────────────────────────────────────
