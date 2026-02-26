@@ -24,8 +24,8 @@ RUN bun install --frozen-lockfile --production
 # Prisma needs the generated client and schema at runtime
 # We place these in server/ to match the build stage structure
 COPY --from=build /app/server/dist ./server/dist
-COPY --from=build /app/server/node_modules/.prisma ./server/node_modules/.prisma
-COPY --from=build /app/server/node_modules/@prisma ./server/node_modules/@prisma
+COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=build /app/node_modules/@prisma ./node_modules/@prisma
 COPY server/prisma/schema.prisma ./server/prisma/schema.prisma
 
 EXPOSE 3000
