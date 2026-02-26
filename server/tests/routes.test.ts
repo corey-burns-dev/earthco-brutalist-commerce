@@ -231,7 +231,7 @@ describe("routes integration", () => {
 
     test("GET /api/products?category= filters by category", async () => {
       await seedProduct({ slug: "essential-1", category: "ESSENTIALS" });
-      await seedProduct({ slug: "lifestyle-1", category: "LIFESTYLE" });
+      await seedProduct({ slug: "outerwear-1", category: "OUTERWEAR" });
       const res = await get("/api/products?category=ESSENTIALS");
       const body = await res.json();
       expect(body.products).toHaveLength(1);

@@ -5,3 +5,4 @@ dist
 .env
 server/.env
 *.tsbuildinfo
+logs_58712460921

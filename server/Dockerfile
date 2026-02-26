@@ -3,7 +3,7 @@ FROM oven/bun:1.3.9-alpine AS deps
 WORKDIR /app
 COPY package.json bun.lock ./
 COPY server/package.json ./server/
-RUN bun install --frozen-lockfile --production=false
+RUN bun install --frozen-lockfile
 
 # ── build ─────────────────────────────────────────────────────────────────────
 FROM deps AS build
@@ -16,17 +16,20 @@ RUN bun run --cwd server build
 FROM oven/bun:1.3.9-alpine AS release
 WORKDIR /app
 
-# Prisma needs the generated client and schema at runtime
-COPY --from=build /app/server/dist ./dist
-COPY --from=build /app/server/node_modules/.prisma ./node_modules/.prisma
-COPY --from=build /app/server/node_modules/@prisma ./node_modules/@prisma
-COPY server/prisma/schema.prisma ./prisma/schema.prisma
-
-# Production deps only
-COPY server/package.json ./
+# Production deps only (using root lockfile)
+COPY package.json bun.lock ./
+COPY server/package.json ./server/
 RUN bun install --frozen-lockfile --production
+
+# Prisma needs the generated client and schema at runtime
+# We place these in server/ to match the build stage structure
+COPY --from=build /app/server/dist ./server/dist
+COPY --from=build /app/server/node_modules/.prisma ./server/node_modules/.prisma
+COPY --from=build /app/server/node_modules/@prisma ./server/node_modules/@prisma
+COPY server/prisma/schema.prisma ./server/prisma/schema.prisma
 
 EXPOSE 3000
 ENV NODE_ENV=production
 
-CMD ["bun", "dist/index.js"]
+# Run from the server directory or point to it
+CMD ["bun", "server/dist/index.js"]
