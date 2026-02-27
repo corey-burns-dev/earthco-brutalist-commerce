@@ -27,14 +27,14 @@ export default function Layout() {
           <NavLink to="/account" className="chip-link">
             Account
           </NavLink>
-          <NavLink to="/auth" className="chip-link">
+          <NavLink to="/auth" className={({ isActive }) => `chip-link${isActive ? " active" : ""}${!currentUser ? " chip-link-cta" : ""}`}>
             {currentUser ? "Switch User" : "Login/Register"}
           </NavLink>
           <NavLink to="/cart" className="btn btn-light icon-btn">
             <ShoppingBag size={18} />
             Cart ({cartCount})
           </NavLink>
-          <NavLink to="/account" className="btn btn-dark icon-btn">
+          <NavLink to="/account" className="btn btn-moss icon-btn">
             <UserRound size={18} />
             {currentUser ? currentUser.name.split(" ")[0] : "Guest"}
           </NavLink>
