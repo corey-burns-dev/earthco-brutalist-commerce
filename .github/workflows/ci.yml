@@ -7,7 +7,7 @@ on:
 jobs:
   validate:
     name: Lint, Test, Build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 20
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5434/earthco_market?schema=public
