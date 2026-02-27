@@ -1,6 +1,7 @@
 import type { CartItem, Order, Product, SessionUser } from "../types/models";
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:4000";
+const API_BASE =
+  import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? "http://localhost:4000" : "");
 
 export class ApiError extends Error {
   status: number;
