@@ -771,11 +771,20 @@ h4 {
 
   .cart-line {
     grid-template-columns: 76px 1fr;
+    gap: 0.5rem 1rem;
   }
 
   .line-qty,
   .line-total {
+    grid-column: 2;
     justify-items: start;
+  }
+
+  .line-total {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
   }
 
   .section-head {
