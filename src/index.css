@@ -1128,6 +1128,7 @@ body.mobile-menu-open {
   }
 
   .search-wrap {
+    flex: none;
     width: 100%;
     max-width: 360px;
   }
