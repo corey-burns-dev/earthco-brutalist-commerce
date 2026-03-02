@@ -158,12 +158,6 @@ h4 {
   gap: 0.6rem;
 }
 
-.mobile-menu-links .chip-link,
-.mobile-menu-links .btn {
-  width: 100%;
-  justify-content: flex-start;
-}
-
 body.mobile-menu-open {
   overflow: hidden;
 }
@@ -267,6 +261,12 @@ body.mobile-menu-open {
 
 .icon-btn {
   min-width: 130px;
+}
+
+.mobile-menu-links .chip-link,
+.mobile-menu-links .btn {
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .hero-grid {

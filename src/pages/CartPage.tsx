@@ -48,7 +48,9 @@ export default function CartPage() {
               <div className="cart-line-info">
                 <h3>{line.product.name}</h3>
                 <p>{line.product.tagline}</p>
-                <strong className="cart-line-unit-price">{formatCurrency(line.product.price)}</strong>
+                <strong className="cart-line-unit-price">
+                  {formatCurrency(line.product.price)}
+                </strong>
               </div>
               <div className="line-qty">
                 <button

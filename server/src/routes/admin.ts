@@ -74,7 +74,9 @@ router.post(
 
     if (!extension) {
       auditLog("admin.image_upload_invalid_type", { actorId, ip, contentType });
-      response.status(400).json({ message: "Invalid image type. Use JPG, PNG, WEBP, GIF, or AVIF." });
+      response
+        .status(400)
+        .json({ message: "Invalid image type. Use JPG, PNG, WEBP, GIF, or AVIF." });
       return;
     }
 

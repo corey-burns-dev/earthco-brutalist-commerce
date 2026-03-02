@@ -3,13 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useStore } from "../context/StoreContext";
 
-function NavLinks({
-  onNavigate,
-  className,
-}: {
-  onNavigate?: () => void;
-  className?: string;
-}) {
+function NavLinks({ onNavigate, className }: { onNavigate?: () => void; className?: string }) {
   const { cartCount, currentUser } = useStore();
   return (
     <div className={className}>
