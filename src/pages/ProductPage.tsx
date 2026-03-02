@@ -11,6 +11,7 @@ export default function ProductPage() {
   const product = slug ? getProductBySlug(slug) : undefined;
   const [quantity, setQuantity] = useState(1);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: slug is an intentional trigger
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setQuantity(1);
