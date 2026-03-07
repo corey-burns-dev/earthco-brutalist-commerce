@@ -32,14 +32,14 @@
     "format": "bunx @biomejs/biome format --write ."
   },
   "dependencies": {
-    "framer-motion": "^12.34.4",
+    "framer-motion": "^12.35.1",
     "lucide-react": "^0.576.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.5",
+    "@biomejs/biome": "^2.4.6",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.14",
