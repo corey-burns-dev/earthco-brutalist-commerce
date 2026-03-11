@@ -125,7 +125,7 @@ describe("server integration", () => {
     ]);
 
     const [bodyA, bodyB] = await Promise.all([responseA.json(), responseB.json()]);
-    const statuses = [responseA.status, responseB.status].sort((a, b) => a - b);
+    const statuses = [responseA.status, responseB.status].toSorted((a, b) => a - b);
     expect(statuses).toEqual([201, 400]);
 
     const messages = [bodyA, bodyB]

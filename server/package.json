@@ -1,7 +1,7 @@
 {
   "name": "earthco-market-server",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "bun --watch src/index.ts",
@@ -34,12 +34,12 @@
     "@types/express": "^5.0.6",
     "@types/node": "^25.4.0",
     "@types/pg": "^8.18.0",
-    "prisma": "^7.4.2",
-    "typescript": "^5.9.3",
-    "oxlint": "^1.52.0",
-    "oxfmt": "^0.37.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.3.3"
+    "lint-staged": "^16.3.3",
+    "oxfmt": "^0.37.0",
+    "oxlint": "^1.52.0",
+    "prisma": "^7.4.2",
+    "typescript": "^5.9.3"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
