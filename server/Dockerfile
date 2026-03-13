@@ -3,7 +3,7 @@ FROM oven/bun:1.3.9-alpine AS deps
 WORKDIR /app
 COPY package.json bun.lock ./
 COPY server/package.json ./server/
-RUN bun install --frozen-lockfile
+RUN bun install --frozen-lockfile --ignore-scripts
 
 # ── build ─────────────────────────────────────────────────────────────────────
 FROM deps AS build
@@ -19,7 +19,7 @@ WORKDIR /app
 # Production deps only (using root lockfile)
 COPY package.json bun.lock ./
 COPY server/package.json ./server/
-RUN bun install --frozen-lockfile --production
+RUN bun install --frozen-lockfile --production --ignore-scripts
 
 # Prisma needs the generated client and schema at runtime
 # We place these in server/ to match the build stage structure
