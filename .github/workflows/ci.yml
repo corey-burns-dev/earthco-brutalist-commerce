@@ -8,6 +8,7 @@ jobs:
   validate:
     name: Lint, Test, Build
     runs-on: self-hosted
+    if: github.repository_owner == "corey-burns-dev"
     timeout-minutes: 20
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5434/earthco_market?schema=public
